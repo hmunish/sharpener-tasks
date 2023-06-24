@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+      integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container p-5">
+      <form class="form-inline form">
+        <label class="form-control">Name</label>
+        <input type="text" class="form-control" name="fullName" />
+        <label class="form-control" name="email">Email</label>
+        <input type="email" class="form-control" name="email" />
+        <label class="form-control">Number</label>
+        <input type="tel" class="form-control" name="number" />
+        <input type="submit" value="Submit" class="form-control btn-success" />
+      </form>
+
+      <ul class="list-group"></ul>
+    </div>
+
+    <script>
+      const addForm = document.querySelector(".form");
+      const list = document.querySelector(".list-group");
+
+      addForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const li = document.createElement("li");
+        const btn = document.createElement("button");
+        const eBtn = document.createElement("button");
+        const element = e.target;
+        const data = {
+          name: element.fullName.value,
+          email: element.email.value,
+          number: element.number.value,
+        };
+
+        // Storing user data to local storage
+        localStorage.setItem(element.email.value, JSON.stringify(data));
+
+        // Display details in list
+        li.classList.add("list-item-group");
+        li.textContent = data.email;
+        btn.textContent = "Delete";
+        btn.className = "btn btn-danger btn-sm delete ml-2";
+        eBtn.textContent = "Edit";
+        eBtn.className = "btn btn-primary btn-sm edit ml-2";
+        li.appendChild(btn);
+        li.appendChild(eBtn);
+        list.appendChild(li);
+      });
+
+      // Delete event
+
+      list.addEventListener("click", (e) => {
+        if (e.target.classList.contains("delete")) {
+          localStorage.removeItem(
+            e.target.parentElement.childNodes[0].textContent
+          );
+          e.target.parentElement.remove();
+        } else if (e.target.classList.contains("edit")) {
+          const data = JSON.parse(
+            localStorage.getItem(
+              e.target.parentElement.childNodes[0].textContent
+            )
+          );
+          addForm.querySelector('input[name="fullName"]').value = data.name;
+          addForm.querySelector('input[name="email"]').value = data.email;
+          addForm.querySelector('input[name="number"]').value = data.number;
+          localStorage.removeItem(
+            e.target.parentElement.childNodes[0].textContent
+          );
+          e.target.parentElement.remove();
+        }
+      });
+    </script>
+  </body>
+</html>
