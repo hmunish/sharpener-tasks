@@ -93,6 +93,35 @@
           e.target.parentElement.remove();
         }
       });
+
+      //   DOM Content loaded
+      window.addEventListener("DOMContentLoaded", () => {
+        const getAppointments = async function () {
+          const res = await axios.get(
+            "https://crudcrud.com/api/20ae3e31440349e4b1aadae59eb3e5f3/appointments"
+          );
+
+          let { data } = res;
+          data.forEach((e) => {
+            const li = document.createElement("li");
+            const btn = document.createElement("button");
+            const eBtn = document.createElement("button");
+            li.classList.add("list-item-group");
+            li.textContent =
+              e.body &&
+              JSON.parse(e.body).name + " " + JSON.parse(e.body).email;
+            btn.textContent = "Delete";
+            btn.className = "btn btn-danger btn-sm delete ml-2";
+            eBtn.textContent = "Edit";
+            eBtn.className = "btn btn-primary btn-sm edit ml-2";
+            li.appendChild(btn);
+            li.appendChild(eBtn);
+            list.appendChild(li);
+          });
+        };
+
+        getAppointments();
+      });
     </script>
   </body>
 </html>
