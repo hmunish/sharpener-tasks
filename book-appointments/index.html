@@ -74,6 +74,14 @@
 
       list.addEventListener("click", (e) => {
         if (e.target.classList.contains("delete")) {
+          axios
+            .delete(
+              `https://crudcrud.com/api/20ae3e31440349e4b1aadae59eb3e5f3/appointments/${e.target.parentElement.getAttribute(
+                "data-id"
+              )}`
+            )
+            .then((res) => alert("Item deleted successfully"))
+            .catch((err) => console.log(err));
           localStorage.removeItem(
             e.target.parentElement.childNodes[0].textContent
           );
@@ -102,6 +110,7 @@
           );
 
           let { data } = res;
+          console.log(data);
           data.forEach((e) => {
             const li = document.createElement("li");
             const btn = document.createElement("button");
@@ -110,6 +119,7 @@
             li.textContent =
               e.body &&
               JSON.parse(e.body).name + " " + JSON.parse(e.body).email;
+            li.setAttribute("data-id", e._id);
             btn.textContent = "Delete";
             btn.className = "btn btn-danger btn-sm delete ml-2";
             eBtn.textContent = "Edit";
