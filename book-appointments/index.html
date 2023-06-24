@@ -27,6 +27,8 @@
       <ul class="list-group"></ul>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+
     <script>
       const addForm = document.querySelector(".form");
       const list = document.querySelector(".list-group");
@@ -46,6 +48,16 @@
         // Storing user data to local storage
         localStorage.setItem(element.email.value, JSON.stringify(data));
 
+        // Storing data to api
+        axios
+          .post(
+            "https://crudcrud.com/api/20ae3e31440349e4b1aadae59eb3e5f3/appointments",
+            {
+              body: JSON.stringify(data),
+            }
+          )
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
         // Display details in list
         li.classList.add("list-item-group");
         li.textContent = data.email;
